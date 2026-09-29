@@ -2,7 +2,7 @@
 
 Live game: https://apex-gp-racing.pages.dev
 
-Cloudflare Pages production deployment: https://58f17ad4.apex-gp-racing.pages.dev
+Cloudflare Pages production deployment: https://dbe436f0.apex-gp-racing.pages.dev
 
 Deployed with `npm run deploy` (`wrangler pages deploy dist --project-name=apex-gp-racing --branch=main`) to Cloudflare Pages.
 
@@ -19,3 +19,9 @@ Source archive: `../apex-gp-source.zip`
 Fixed reversed lateral input by matching the steering sign to the circuit normal. All eight camera-projection regression tests pass, covering WASD/arrow bindings and eight circuit positions in both chase and cockpit views. Browser checks confirmed each keyboard direction, held trusted pointer input on both touch steering buttons in both views, acceleration and braking. Both live URLs serve the tested production HTML and JavaScript byte for byte.
 
 Workers version: `df8d4c39-e390-4576-a801-56c98216a6aa`
+
+## Control information
+
+Removed control hints from the menu and race HUD. The header info button opens an accessible keyboard diagram with shortcuts in a native dialog. Verified opening, Escape/button dismissal, race pause/resume, mobile fit at 390 × 844, and matching deployed HTML/CSS/JavaScript on both URLs.
+
+Workers version: `1e49074a-3b55-4539-a909-a9e10761216f`

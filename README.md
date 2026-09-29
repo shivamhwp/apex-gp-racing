@@ -6,6 +6,8 @@ A lightweight 3D open-wheel racing game built with Three.js and Vite, hosted on 
 
 ## Play
 
+Click the **ⓘ** button for the control diagram. Opening it during a race pauses the game; closing it resumes the race.
+
 Three laps of the 1.60 km Riviera circuit against seven AI opponents. The circuit has steering assistance: use steering to choose your line and overtake, brake for sharp turns, and use hybrid boost on the straights. Grass, barriers and contact cost speed. Fastest completed-race laps are saved locally on your device.
 
 - W / Up: accelerate
