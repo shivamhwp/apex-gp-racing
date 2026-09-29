@@ -7,7 +7,9 @@
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0",
-    "deploy": "npm run build && wrangler pages deploy dist --project-name=apex-gp-racing --branch=main"
+    "deploy": "npm run build && wrangler pages deploy dist --project-name=apex-gp-racing --branch=main",
+    "test": "node --test",
+    "deploy:worker": "npm run build && wrangler deploy --config wrangler.worker.jsonc"
   },
   "dependencies": {
     "three": "^0.180.0"

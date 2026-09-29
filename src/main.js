@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import {createCar} from './car.js';
 import {buildCircuit,frame,curvature,LENGTH,WIDTH,samples} from './circuit.js';
 import {EngineAudio} from './audio.js';
+import {steeringDirection} from './controls.js';
 
 const $=id=>document.getElementById(id),clamp=THREE.MathUtils.clamp,lerp=THREE.MathUtils.lerp;
 const dom={};['menu','hud','modal','modal-content','countdown','count-text','position','lap','time','best','speed','gear','boost-fill','boost-text','leaderboard','corner','notice','header-label','sound'].forEach(id=>dom[id]=$(id));
@@ -66,8 +67,7 @@ function simulate(dt){
  elapsed+=dt;lapTime=elapsed-lastLapAt;countElapsed+=dt;if(countElapsed>4.1)dom.countdown.hidden=true;
  if(noticeTimer>0){noticeTimer-=dt;if(noticeTimer<=0)dom.notice.classList.remove('show')}
  const gas=keys.has('KeyW')||keys.has('ArrowUp'),brake=keys.has('KeyS')||keys.has('ArrowDown');
- const left=keys.has('KeyA')||keys.has('ArrowLeft'),right=keys.has('KeyD')||keys.has('ArrowRight');
- const turn=(right?1:0)-(left?1:0);steer=lerp(steer,turn,1-Math.exp(-dt*9));
+ const turn=steeringDirection(keys);steer=lerp(steer,turn,1-Math.exp(-dt*9));
  boosting=(keys.has('Space')||keys.has('ShiftLeft')||keys.has('ShiftRight'))&&boost>1&&gas&&player.speed>8&&!brake;
  boost=clamp(boost+(boosting?-26:12)*dt,0,100);boostGlow.visible=boosting;
  const offroad=Math.abs(player.lateral)>WIDTH-.15,k=curvature(player.s),safeSpeed=Math.min(91,Math.sqrt(24/(Math.abs(k)+.0005)));
@@ -160,5 +160,5 @@ addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updat
 renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();pauseRace();notify('GRAPHICS INTERRUPTED — RELOAD TO RESTORE',20)});
 player.s=110;player.lateral=-2;placeCars();const initial=frame(110,-2);camera.position.copy(initial.p).add(new THREE.Vector3(9.5,3.15,9.5));cameraTarget.copy(initial.p).add(new THREE.Vector3(-4.4,1.05,0));camera.lookAt(cameraTarget);
 // Read-only diagnostics for checking rendering and race state in the browser.
-window.__apex={get state(){return state},get stats(){return {fps:Math.round(lastFps),drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,pixelRatio:renderer.getPixelRatio(),quality,elapsed,speed:player.speed,lap:currentLap,position:rankings().indexOf(player)+1,trackLength:LENGTH,boost,offroad:Math.abs(player.lateral)>WIDTH,cameraMode,bestEver}},get cars(){return cars.map(c=>({name:c.name,s:c.s,lateral:c.lateral,speed:c.speed,finished:c.finished}))}};
+window.__apex={get steering(){const centre=frame(player.s+6).p.project(camera),lane=frame(player.s+6,player.lateral).p.project(camera);return {input:steer,lateral:player.lateral,screenOffset:lane.x-centre.x}},get state(){return state},get stats(){return {fps:Math.round(lastFps),drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,pixelRatio:renderer.getPixelRatio(),quality,elapsed,speed:player.speed,lap:currentLap,position:rankings().indexOf(player)+1,trackLength:LENGTH,boost,offroad:Math.abs(player.lateral)>WIDTH,cameraMode,bestEver}},get cars(){return cars.map(c=>({name:c.name,s:c.s,lateral:c.lateral,speed:c.speed,finished:c.finished}))}};
 animate();requestAnimationFrame(()=>{const loading=$('loading');loading.style.opacity='0';setTimeout(()=>loading.hidden=true,550)});

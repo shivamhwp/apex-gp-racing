@@ -24,6 +24,7 @@ Requires Node.js 20.19+ (or 22.12+) and a Cloudflare-authenticated Wrangler CLI.
 ```sh
 npm install
 npm run dev
+npm test
 npm run build
 wrangler pages deploy dist --project-name=apex-gp-racing --branch=main
 ```
@@ -33,3 +34,5 @@ All car meshes, track geometry, scenery and texture maps are generated locally. 
 Rendering uses merged geometry, instancing, a fixed 120 Hz simulation step, capped pixel density, and adaptive resolution. The performance preset also disables dynamic shadows. Measured frame rates depend on device, display and browser. WebGL 2 is required.
 
 This is an original Formula-style arcade game, with original driver names and liveries.
+
+`npm test` checks steering direction against camera-projected circuit coordinates for WASD, arrow-key and touch bindings in both camera views. `npm run deploy:worker` also updates the original workers.dev URL.
